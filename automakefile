@@ -5,7 +5,7 @@
 ## Login   <romain.pillot@epitech.net>
 ## 
 ## Started on  Mon Jun 26 07:43:34 2017 romain pillot
-## Last update Mon Jun 26 14:52:13 2017 romain pillot
+## Last update Mon Jun 26 15:34:27 2017 romain pillot
 ##
 
 script=$0
@@ -115,13 +115,14 @@ echo -e "\nre: fclean all" >> $makefile
 echo -e "\n.PHONY: all clean fclean re" >> $makefile
 
 #Check if valid Makefile #tricky
-folder=${config%/*}
-output=$(make -C $folder re)
+get_value "PROJECT_DIR" true
+
+output=$(make -C $value re)
 if [ $(echo $?) != 0 ]
 then
     printf '%s: invalid config\n' script
     rm -rf $makefile
     exit 84
 else
-    output=$(make -C $folder fclean)
+    output=$(make -C $value fclean)
 fi
