@@ -5,5 +5,10 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Mon Jun 26 07:47:00 2017 romain pillot
-** Last update Mon Jun 26 07:47:01 2017 romain pillot
+** Last update Mon Jun 26 14:53:35 2017 romain pillot
 */
+
+void main()
+{
+
+}

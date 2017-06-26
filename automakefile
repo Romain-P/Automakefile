@@ -1,0 +1,127 @@
+#!/bin/sh
+## automakefile for  in /home/romain.pillot/projects/ADM_automakefile_2016
+## 
+## Made by romain pillot
+## Login   <romain.pillot@epitech.net>
+## 
+## Started on  Mon Jun 26 07:43:34 2017 romain pillot
+## Last update Mon Jun 26 14:52:13 2017 romain pillot
+##
+
+script=$0
+
+if [ $# != 1 ]
+then
+    printf '%s: %s\n' $0, "invalid argument."
+    exit 84
+else
+    config=$1
+fi
+
+# Get a value from the config
+function get_value()
+{
+    local key="${1};"
+    local necessary=$2
+    local key_length=$((${#key} + 1))
+    value=$(cat $config | grep ^$key | cut -c$key_length-)
+    if [ -z "$value" ] && [ $necessary == true ]
+    then
+	printf '%s: cannot find key %s\n' $script $key
+	exit 84
+    fi
+}
+
+#Create Makefile file
+get_value "PROJECT_DIR" true
+makefile="${value}/Makefile"
+rm -rf $makefile
+
+# Write a variable
+function write_variable()
+{
+    get_value $2 $3
+    echo -e "${1}\t=\t${value}\n" >> $makefile
+}
+
+#Write compiler line
+write_variable "CC" "CC" true
+
+#Write program name
+write_variable "NAME" "EXEC" true
+
+#Write removing macro
+echo -e "RM\t=\trm -f" >> $makefile
+
+#Write cflags
+get_value "HEADERS_DIR" false
+if [ -z $value ]
+then
+    value="."
+fi
+headers=$value
+
+get_value "CFLAGS" false
+echo -e "\nCFLAGS\t=\t${value} -I${headers}" >> $makefile
+
+#Write ldlags
+get_value "LIBS_DIR" false
+if [ -z $value ]
+then
+    value="."
+fi
+libs=$value
+
+get_value "LDFLAGS" false
+echo -e "\nLDFLAGS\t=\t${value} -L${libs}" >> $makefile
+
+#Write source files
+get_value "SOURCES_DIR" false
+if [ -z $value ]
+then
+    value="."
+fi
+
+src="\nSRCS\t= \t\0134\n"
+
+while IFS='' read -r line || [[ -n "$line" ]]
+do
+    files=(${line//;/ })
+    if [ ${files[0]: -2} == '.c' ]
+    then
+        src+="\t\t${value}/${files[0]} \0134\n"
+    fi
+done < "$config"
+echo -e $src >> $makefile
+
+#Write object macro
+echo -e "\nOBJS\t=\t\$(SRCS:.c=.o)" >> $makefile
+
+#Write command: all
+echo -e "all:\t\$(NAME)" >> $makefile
+echo -e "\n\$(NAME): \$(OBJS)" >> $makefile
+echo -e "\t\$(CC) \$(OBJS) -o \$(NAME) \$(CFLAGS) \$(LDFLAGS)" >> $makefile
+
+#Write command: clean
+echo -e "\nclean:\n\t\$(RM) \$(NAME)" >> $makefile
+
+#Write command: fclean
+echo -e "\nfclean: clean\n\t\$(RM) \$(NAME)" >> $makefile
+
+#Write command: re
+echo -e "\nre: fclean all" >> $makefile
+
+#Write .PHONY
+echo -e "\n.PHONY: all clean fclean re" >> $makefile
+
+#Check if valid Makefile #tricky
+folder=${config%/*}
+output=$(make -C $folder re)
+if [ $(echo $?) != 0 ]
+then
+    printf '%s: invalid config\n' script
+    rm -rf $makefile
+    exit 84
+else
+    output=$(make -C $folder fclean)
+fi

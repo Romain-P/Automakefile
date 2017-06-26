@@ -5,20 +5,22 @@
 ## Login   <romain.pillot@epitech.net>
 ## 
 ## Started on  Sun Jun  4 17:02:11 2017 romain pillot
-## Last update Mon Jun 26 07:43:54 2017 romain pillot
+## Last update Mon Jun 26 14:04:19 2017 romain pillot
 ##
 
 CC	=	gcc
 
-NAME	=	unused
+NAME	=	unused	\
 
 RM	=	rm -f
 
-SRCS	=	src/main.c
-
 OBJS	=	$(SRCS:.c=.o)
 
-CFLAGS	+=	-Iinc -Werror -Wall -Wextra
+SRCS	=	\
+		src/main.c	\
+
+
+CFLAGS	+=	-I. -Werror -Wall -Wextra
 
 all:	$(NAME)
 

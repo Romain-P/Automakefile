@@ -1,0 +1,25 @@
+CC	=	clang
+
+NAME	=	fakeProj
+
+RM	=	rm -f
+
+OBJS	=	$(SRCS:.c=.o)
+
+CFLAGS	=	-ftest-coverage -O2 -I.
+
+SRC	= 	\
+		caca/main.c \
+		caca/calc.c \
+
+all:	$(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(OBJS) -o $(NAME)
+
+clean:
+	$(RM) $(NAME)
+
+fclean: clean
+	$(RM) $(NAME)
+
