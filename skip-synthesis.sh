@@ -5,10 +5,10 @@
 ## Login   <romain.pillot@epitech.net>
 ## 
 ## Started on  Mon Jun 26 07:07:59 2017 romain pillot
-## Last update Mon Jun 26 07:39:33 2017 romain pillot
+## Last update Mon Jun 26 08:36:23 2017 romain pillot
 ##
 
-if [ $# -ne 1 ]
+if [ $# != 1 ]
 then
     printf $0': %s\n' "invalid argument."
 else
