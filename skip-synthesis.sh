@@ -5,12 +5,12 @@
 ## Login   <romain.pillot@epitech.net>
 ## 
 ## Started on  Mon Jun 26 07:07:59 2017 romain pillot
-## Last update Mon Jun 26 08:36:23 2017 romain pillot
+## Last update Mon Jun 26 15:02:12 2017 romain pillot
 ##
 
 if [ $# != 1 ]
 then
     printf $0': %s\n' "invalid argument."
 else
-    awk '{print $3, "\t", $9}' | grep $1
+    awk '{print $3, "\t", $9}' | grep \ $1
 fi
